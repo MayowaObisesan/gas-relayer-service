@@ -26,3 +26,4 @@ pub mod secure_key;
 pub use intent::{
     Intent, MetaTxRequest, Reject, VerifiedIntent, domain, domain_named, verify_intent,
 };
+pub mod keeper;

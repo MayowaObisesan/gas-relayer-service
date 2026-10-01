@@ -10,6 +10,7 @@ Every output below was captured from this repository on anvil. If your output di
 |---|---|
 | `RUNBOOK.md` (this file) | Running it, and operating it |
 | `WORKSHOP.md` | Teaching it (Day 4 run sheet, timings) |
+| `KEEPERS_WORKSHOP.md` | Teaching it (Week 5, the keeper) — start here for Day 5 |
 | `README.md` | What the code is and why |
 | `SECURITY_AUDIT_CHECKLIST.md` | Grading it |
 
@@ -593,6 +594,23 @@ If you cannot answer these with a metric, you are guessing:
 | `DRY_RUN` | `1` | **Lab switch.** `0` = buy failing transactions |
 | `GAS_LIMIT` | *(none)* | Explicit gas cap; also skips `eth_estimateGas` |
 | `RELAYER_URL` | `http://127.0.0.1:3000` | Simulator's target only |
+
+### 7.1b Keeper environment variables (Week 5)
+
+The keeper reuses `PRIVATE_KEY`, `RPC_URL` and `PRIVATE_RPC_URL` from the table above, and adds:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `POOL_ADDRESS` | `0x0000...0000` | The pool to watch. **Must have code** — the keeper refuses to start otherwise |
+| `WS_RPC_URL` | scheme-rewritten `RPC_URL` | Log subscription. The port is *not* guessed; anvil/geth use 8546 for WS |
+| `KEEPER_POLL_SECS` | `30` | Timer fallback. **This is the keeper's real reaction time** if the socket dies |
+| `KEEPER_MAX_TX_PER_HOUR` | `12` | Broadcast cap. `0` = unlimited, and the banner says so |
+| `KEEPER_PRIORITY_FEE_GWEI` | `2` | EIP-1559 priority fee. The fee cap is derived as 2× this |
+| `KEEPER_QUEUE_CAPACITY` | `100` | Trigger-queue depth. A full queue drops a nudge, which the timer recovers |
+| `KEEPER_GAS_LIMIT` | *(none)* | Explicit gas cap; also skips `eth_estimateGas` |
+| `KEEPER_AWAIT_RECEIPTS` | `1` | `0` = fire and forget, and the gas metrics become meaningless |
+| `KEEPER_DRY_RUN` | `1` | **Lab switch.** `0` = buy reverting liquidations |
+| `KEEPER_BIND_ADDR` | `127.0.0.1:3001` | `/metrics`, `/health`, `POST /upkeep` |
 
 ### 7.2 HTTP API
 

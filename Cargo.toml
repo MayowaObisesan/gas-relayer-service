@@ -18,3 +18,10 @@ serde_json = "1.0.151"
 tokio = { version = "1.53.1", features = ["full"] }
 # Day 4: the relayer key lives in a `Zeroizing` buffer so it is wiped on drop.
 zeroize = "1"
+# Day 5 (keepers): `StreamExt`, to pull the next `Log` out of alloy's `eth_subscribe`
+# stream in the watcher. Alloy returns a `Subscription` (a `Stream`); consuming a
+# `Stream` requires exactly one `StreamExt` in scope. Alloy re-exports futures-core
+# internally but deliberately does not re-export the extension trait, so the keeper
+# depends on it directly rather than through alloy.
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
+

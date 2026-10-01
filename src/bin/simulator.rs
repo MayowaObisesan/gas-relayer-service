@@ -33,6 +33,7 @@ use traffic_simulator::intent::{
     MetaTxRequest, build_intent, domain_named, malleable_twin, signing_hash, unix_now,
 };
 
+/// The Default intent count
 const DEFAULT_COUNT: usize = 50;
 /// How long an intent stays valid. Well inside the relayer's 300-second window.
 const DEADLINE_SECS: u64 = 120;

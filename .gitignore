@@ -1,6 +1,11 @@
 /target
 
-# Local secrets: never commit the relayer's private key
+# Local secrets: never commit the relayer's or the keeper's private key
 .env
 
 .idea
+
+# Foundry build output for contracts/LendingPoolMock.sol. The *creation bytecode* is committed
+# (in src/keeper/mock.rs) so the keeper lab runs on a bare `anvil`; the artefacts are not.
+/out
+/cache

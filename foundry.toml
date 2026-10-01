@@ -1,0 +1,29 @@
+# Foundry configuration, scoped to `contracts/`.
+#
+# Without this file `forge build` looks in `src/` -- which in this repository is *Rust*, not
+# Solidity -- and cheerfully reports "Nothing to compile". This repo is a Rust crate that happens
+# to ship one Solidity file for the keeper lab, so the Solidity root has to be pointed at
+# `contracts/` explicitly.
+#
+# The compiled artifact is not committed either. `src/keeper/mock.rs` embeds the creation
+# bytecode so the lab runs on a bare `anvil`, and `scripts/deploy_pool.sh` recompiles from this
+# file on demand. Regenerate with:
+#
+#     forge build --optimize --optimizer-runs 200
+#
+# and to refresh the embedded copy:
+#
+#     scripts/deploy_pool.sh --print-bytecode
+[profile.default]
+src = "contracts"
+out = "out"
+libs = []
+optimizer = true
+optimizer_runs = 200
+# Pin the compiler. The bytecode embedded in `src/keeper/mock.rs` was produced by 0.8.28, and an
+# unpinned `forge build` silently produces a different (also valid) creation code, at which point
+# "recompile and redeploy" no longer matches the Rust constant.
+solc = "0.8.28"
+evm_version = "cancun"
+# Not a production profile: the contract is a teaching mock, so gas snapshots are noise.
+gas_reports = ["*"]
